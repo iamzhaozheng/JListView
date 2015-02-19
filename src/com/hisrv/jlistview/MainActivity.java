@@ -42,15 +42,15 @@ public class MainActivity extends Activity implements OnHeaderListener,
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 		mJListView = (JListView) findViewById(R.id.jlist);
-//		mJListView.setFooterView(R.layout.footer);
+		mJListView.setFooterView(R.layout.footer);
 		mJListView.setHeaderView(R.layout.header);
 		mJListView.setOnHeaderListener(this);
-//		mJListView.setOnFooterListener(this);
+		mJListView.setOnFooterListener(this);
 		mAdapter = new ArrayAdapter<String>(this, R.layout.item,
 				generateList(mStart, mEnd));
 		mJListView.setAdapter(mAdapter);
 		initHeaderViews();
-//		initFooterViews();
+		initFooterViews();
 	}
 	
 	private void initFooterViews() {
