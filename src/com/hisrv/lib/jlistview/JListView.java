@@ -30,10 +30,10 @@ public class JListView extends ListView implements OnScrollListener {
 	private final static int SCROLLBACK_HEADER = 0;
 	private final static int SCROLLBACK_FOOTER = 1;
 	private final static int SCROLL_DURATION = 400;
-	private final static int PULL_LOAD_MORE_DELTA = 50; 
+	private final static int PULL_LOAD_MORE_DELTA = 50;
 	private final static float OFFSET_RADIO = 1.8f;
 
-	private float mLastY = -1; 
+	private float mLastY = -1;
 	private int mTotalItemCount;
 	private int mScrollBack;
 
@@ -45,7 +45,7 @@ public class JListView extends ListView implements OnScrollListener {
 	private boolean mPullRefreshing, mPullLoading;
 	private int mHeaderViewHeight;
 
-	private OnScrollListener mScrollListener; 
+	private OnScrollListener mScrollListener;
 	private OnFooterListener mOnFooterListener;
 	private OnHeaderListener mOnHeaderListener;
 	private HeaderState mHeaderState = HeaderState.NORMAL;
@@ -82,14 +82,15 @@ public class JListView extends ListView implements OnScrollListener {
 
 	/**
 	 * @param resHeader
-	 *            the header view resource id for pulling to refresh, 0 will disable the
-	 *            refresh feature
+	 *            the header view resource id for pulling to refresh, 0 will
+	 *            disable the refresh feature
 	 */
 	public void setHeaderView(int resHeader) {
 		if (resHeader == 0) {
 			mHeaderEnabled = false;
 		} else {
-			LayoutInflater.from(getContext()).inflate(resHeader, mHeaderContainer, true);
+			LayoutInflater.from(getContext()).inflate(resHeader,
+					mHeaderContainer, true);
 			mHeaderEnabled = true;
 			mHeaderContainer.getViewTreeObserver().addOnGlobalLayoutListener(
 					new OnGlobalLayoutListener() {
@@ -109,15 +110,16 @@ public class JListView extends ListView implements OnScrollListener {
 	 * call this before setAdapter
 	 * 
 	 * @param resFooter
-	 *            the footer view resource id for loading more, 0 will disable the
-	 *            loading more feature
+	 *            the footer view resource id for loading more, 0 will disable
+	 *            the loading more feature
 	 */
 	public void setFooterView(int resFooter) {
 		if (resFooter == 0) {
 			mFooterEnabled = false;
 		} else {
 			mFooterEnabled = true;
-			mFooterView = LayoutInflater.from(getContext()).inflate(resFooter, this, false);
+			mFooterView = LayoutInflater.from(getContext()).inflate(resFooter,
+					this, false);
 			mFooterFacade.addView(mFooterView);
 			mFooterView.setOnClickListener(new OnClickListener() {
 
@@ -182,8 +184,7 @@ public class JListView extends ListView implements OnScrollListener {
 		if (height < 0) {
 			height = 0;
 		}
-		ViewGroup.LayoutParams lp = mHeaderContainer
-				.getLayoutParams();
+		ViewGroup.LayoutParams lp = mHeaderContainer.getLayoutParams();
 		lp.height = height;
 		mHeaderContainer.setLayoutParams(lp);
 	}
@@ -268,10 +269,11 @@ public class JListView extends ListView implements OnScrollListener {
 		case MotionEvent.ACTION_MOVE:
 			final float deltaY = ev.getRawY() - mLastY;
 			mLastY = ev.getRawY();
-			if (getFirstVisiblePosition() == 0
+			if (getFirstVisiblePosition() == 0 && mHeaderEnabled
 					&& (mHeaderContainer.getHeight() > 0 || deltaY > 0)) {
 				updateHeaderHeight(deltaY / OFFSET_RADIO);
 			} else if (getLastVisiblePosition() == mTotalItemCount - 1
+					&& mFooterEnabled
 					&& (getFooterBottomMargin() > 0 || deltaY < 0)) {
 				if (getFirstVisiblePosition() > 0) {
 					updateFooterHeight(-deltaY / OFFSET_RADIO);
@@ -280,16 +282,15 @@ public class JListView extends ListView implements OnScrollListener {
 			break;
 		default:
 			mLastY = -1;
-			if (getFirstVisiblePosition() == 0) {
-				if (mHeaderEnabled
-						&& mHeaderContainer.getHeight() > mHeaderViewHeight) {
+			if (getFirstVisiblePosition() == 0 && mHeaderEnabled) {
+				if (mHeaderContainer.getHeight() > mHeaderViewHeight) {
 					mPullRefreshing = true;
 					changeHeaderState(HeaderState.REFRESHING);
 				}
 				resetHeaderHeight();
-			} else if (getLastVisiblePosition() == mTotalItemCount - 1) {
-				if (mFooterEnabled
-						&& getFooterBottomMargin() > PULL_LOAD_MORE_DELTA
+			} else if (getLastVisiblePosition() == mTotalItemCount - 1
+					&& mFooterEnabled) {
+				if (getFooterBottomMargin() > PULL_LOAD_MORE_DELTA
 						&& !mPullLoading) {
 					startLoadMore();
 				}
