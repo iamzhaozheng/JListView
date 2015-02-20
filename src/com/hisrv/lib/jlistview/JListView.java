@@ -13,7 +13,6 @@ import android.view.animation.DecelerateInterpolator;
 import android.widget.AbsListView;
 import android.widget.AbsListView.OnScrollListener;
 import android.widget.LinearLayout;
-import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.Scroller;
 
@@ -128,6 +127,10 @@ public class JListView extends ListView implements OnScrollListener {
 					startLoadMore();
 				}
 			});
+			if (!mIsFooterReady) {
+				mIsFooterReady = true;
+				addFooterView(mFooterFacade);
+			}
 		}
 		setFooterDividersEnabled(mFooterEnabled);
 	}
@@ -299,15 +302,6 @@ public class JListView extends ListView implements OnScrollListener {
 			break;
 		}
 		return super.onTouchEvent(ev);
-	}
-
-	@Override
-	public void setAdapter(ListAdapter adapter) {
-		if (!mIsFooterReady && mFooterEnabled) {
-			mIsFooterReady = true;
-			addFooterView(mFooterFacade);
-		}
-		super.setAdapter(adapter);
 	}
 
 	@Override
