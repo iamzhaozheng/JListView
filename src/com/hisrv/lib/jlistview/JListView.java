@@ -105,32 +105,35 @@ public class JListView extends ListView implements OnScrollListener {
 		}
 	}
 
+	public void enableFooter(boolean enable) {
+		mFooterEnabled = enable;
+		if (enable) {
+			mFooterView.setVisibility(View.VISIBLE);
+		} else {
+			mFooterView.setVisibility(View.GONE);
+		}
+	}
+	
 	/**
 	 * call this before setAdapter
 	 * 
 	 * @param resFooter
-	 *            the footer view resource id for loading more, 0 will disable
-	 *            the loading more feature
+	 *            the footer view resource id for loading more
 	 */
 	public void setFooterView(int resFooter) {
-		if (resFooter == 0) {
-			mFooterEnabled = false;
-		} else {
-			mFooterEnabled = true;
-			mFooterView = LayoutInflater.from(getContext()).inflate(resFooter,
-					this, false);
-			mFooterFacade.addView(mFooterView);
-			mFooterView.setOnClickListener(new OnClickListener() {
+		mFooterView = LayoutInflater.from(getContext()).inflate(resFooter,
+				this, false);
+		mFooterFacade.addView(mFooterView);
+		mFooterView.setOnClickListener(new OnClickListener() {
 
-				@Override
-				public void onClick(View v) {
-					startLoadMore();
-				}
-			});
-			if (!mIsFooterReady) {
-				mIsFooterReady = true;
-				addFooterView(mFooterFacade);
+			@Override
+			public void onClick(View v) {
+				startLoadMore();
 			}
+		});
+		if (!mIsFooterReady) {
+			mIsFooterReady = true;
+			addFooterView(mFooterFacade);
 		}
 		setFooterDividersEnabled(mFooterEnabled);
 	}

@@ -19,6 +19,7 @@ public class FooterController implements OnFooterListener {
 	public FooterController(JListView listView, int resFooter) {
 		mJListView = listView;
 		mJListView.setFooterView(R.layout.footer);
+		mJListView.enableFooter(true);
 		mJListView.setOnFooterListener(this);
 		initViews(mJListView);
 	}
@@ -51,6 +52,10 @@ public class FooterController implements OnFooterListener {
 	
 	public void done() {
 		mJListView.stopLoadMore();
+	}
+	
+	public void enable(boolean enabled) {
+		mJListView.enableFooter(enabled);
 	}
 	
 	public void setOnLoadMoreListener(OnLoadMoreListener l) {

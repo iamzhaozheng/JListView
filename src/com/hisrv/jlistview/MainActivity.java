@@ -72,6 +72,7 @@ public class MainActivity extends Activity implements OnRefreshListener, OnLoadM
 				}
 				mEnd += 10;
 				mFooterController.done();
+				mFooterController.enable(false);
 			}
 		}, 2000);
 		
